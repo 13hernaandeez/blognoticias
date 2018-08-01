@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Noticia{{ noticia.id }}{% endblock %}
+
+{% block body %}
+
+<section id='content-wrap' class='blog-single'>
+	<div class='row'>
+		<div class='col-twelve'>
+			
+			<article class='format-standard'>  
+
+				<div class='content-media'>
+					<div class='post-thumb'>
+						<img src="{{ asset(noticia.imagen) }}"  alt='imagen1'> 
+					</div>  
+				</div>
+				<div class='primary-content'>
+
+					<h1 class='page-title'>{{ noticia.titulo }}</h1>	
+
+					<ul class='entry-meta'>
+						<li class='date'>{{ noticia.fecha | date('d-m-Y')}}</li>						
+
+					</ul>						
+
+					<p class='lead'>{{ noticia.descripcion}} </p> 
+
+
+				</div> <!-- end author-profile -->						
+			</article>
+			
+			{% endblock %}
