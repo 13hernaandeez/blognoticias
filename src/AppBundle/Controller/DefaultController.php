@@ -6,7 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class DefaultController extends Controller
 {
@@ -19,7 +22,7 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('AppBundle:Noticia');
 
         $noticia = $repository->findAllOrderedByFecha();
-       
+
         
         return $this->render('default/inicio.html.twig', 
             array(
@@ -43,5 +46,27 @@ class DefaultController extends Controller
             array(
                 'noticia'=>$noticia)
         );
+    }
+
+
+    /**
+       * @Route("/noticia.{_format}", name="noticia_json_xml", requirements={"_format": "json|xml"})
+     */
+    public function tareasJsonAction($_format)
+    {
+        
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Noticia');
+        $noticia = $repository->findAllOrderedByFecha();
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContenido=$serializer->serialize($noticia, 'json');
+
+        $response = new Response();
+        $response->headers->set('Content-type', 'application/json');
+        $response->setContent($jsonContenido);
+        return $response;
     }
 }
