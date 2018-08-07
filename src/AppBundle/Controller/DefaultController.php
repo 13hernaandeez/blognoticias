@@ -49,7 +49,10 @@ class DefaultController extends Controller
 
 
     /**
-       * @Route("/noticia.{_format}", name="noticia_json_xml", requirements={"_format": "json|xml"})
+     * @Route("/noticias.{_format}", 
+     *          name="noticias_json_xml",
+     *          requirements={"_format": "json|xml"}
+     *              )
      */
     public function tareasJsonAction($_format)
     {
